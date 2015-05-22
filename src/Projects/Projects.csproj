@@ -119,6 +119,9 @@
     <Compile Include="App_Start\ApplicationSettings.cs" />
     <Compile Include="App_Start\Bootstrap.cs" />
     <Compile Include="Aspects\StatsdMetricsAttribute.cs" />
+    <Compile Include="Contracts\Commands\ProjectCommands.cs" />
+    <Compile Include="Contracts\Enums\ProjectStatus.cs" />
+    <Compile Include="Contracts\Events\ProjectEvents.cs" />
     <Compile Include="Controllers\AopController.cs" />
     <Compile Include="Controllers\SamplesController.cs" />
     <Compile Include="Domain\Base\AggregateBase.cs" />
@@ -128,6 +131,9 @@
     <Compile Include="Domain\Base\IRepository.cs" />
     <Compile Include="Domain\Base\RedirectToWhen.cs" />
     <Compile Include="Domain\Base\IState.cs" />
+    <Compile Include="Domain\Projects\ProjectAggregate.cs" />
+    <Compile Include="Domain\Projects\ProjectApplicationService.cs" />
+    <Compile Include="Domain\Projects\ProjectState.cs" />
     <Compile Include="Domain\Samples\SampleAggregate.cs" />
     <Compile Include="Domain\Samples\SampleApplicationService.cs" />
     <Compile Include="Contracts\Events\SampleEvents.cs" />

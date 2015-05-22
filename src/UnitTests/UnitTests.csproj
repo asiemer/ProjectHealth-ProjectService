@@ -65,6 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\project_aggregate_specs.cs" />
+    <Compile Include="Domain\project_app_servie_specs.cs" />
     <Compile Include="ReadModel\SamplesObserverSpecs.cs" />
     <Compile Include="SpecificationBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -79,9 +81,7 @@
       <Name>Projects</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Domain\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -13,6 +13,12 @@ namespace Projects.Domain
                 return new SampleAggregate(state) as T;
             }
 
+            if (typeof (T) == typeof (ProjectAggregate))
+            {
+                var state = new ProjectState(events);
+                return new ProjectAggregate(state) as T;
+            }
+
             throw new ArgumentException("Unknown aggregate type");
         }
     }
