@@ -3,7 +3,12 @@ using Projects.Contracts.Commands;
 
 namespace Projects.Domain
 {
-    public class ProjectApplicationService
+    public interface IProjectsApplicationService {
+        void Execute(object command);
+        Guid When(CreateProject command);
+    }
+
+    public class ProjectApplicationService : IProjectsApplicationService
     {
         private readonly IRepository _repository;
 
@@ -17,10 +22,16 @@ namespace Projects.Domain
             RedirectToWhen.InvokeCommand(this, command);
         }
 
-        private void When(CreateProject cmd)
+        public Guid When(CreateProject cmd)
         {
             var id = Guid.NewGuid();
             InternalAct(id, aggregate => aggregate.Create(id, cmd.Name));
+            return id;
+        }
+
+        public void When(SetCem cmd)
+        {
+            InternalAct(cmd.Id, aggregate => aggregate.SetCem(cmd.StaffId));
         }
 
         private void InternalAct(Guid id, Action<ProjectAggregate> action)

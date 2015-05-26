@@ -5,7 +5,7 @@ namespace Projects.Domain
 {
     public class ProjectAggregate : AggregateBase<ProjectState>
     {
-        public ProjectAggregate(ProjectState state) : base(state ?? new ProjectState())
+        public ProjectAggregate(ProjectState state) : base(state)
         {
         }
 
@@ -21,6 +21,36 @@ namespace Projects.Domain
                 Id = id,
                 Name = name
             });
+        }
+
+        public void SetCem(Guid staffId)
+        {
+            Apply(new CemSet{Id = State.Id});
+        }
+
+        public void SetPm(Guid staffId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddTeamMembers(Guid[] staffIds)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveTeamMembers(Guid[] staffIds)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddMetrics(Guid[] metricIds)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveMetrics(Guid[] metricIds)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -123,6 +123,7 @@
     <Compile Include="Contracts\Enums\ProjectStatus.cs" />
     <Compile Include="Contracts\Events\ProjectEvents.cs" />
     <Compile Include="Controllers\AopController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\SamplesController.cs" />
     <Compile Include="Domain\Base\AggregateBase.cs" />
     <Compile Include="Domain\AggregateFactory.cs" />

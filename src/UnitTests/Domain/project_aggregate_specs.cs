@@ -29,7 +29,7 @@ namespace UnitTests.Domain
             base.Given();
             projectId = Guid.NewGuid();
             projectName = "Some project";
-            state = new ProjectState();
+            state = new ProjectState(new object[0]);
             sut = new ProjectAggregate(state);
         }
 
@@ -92,7 +92,7 @@ namespace UnitTests.Domain
             base.Given();
             projectId = Guid.NewGuid();
             projectName = "Some project";
-            state = new ProjectState();
+            state = new ProjectState(new Object[0]);
             sut = new ProjectAggregate(state);
             sut.Create(Guid.NewGuid(), "Interesting project");
         }
@@ -113,7 +113,7 @@ namespace UnitTests.Domain
         {
             base.Given();
             projectId = Guid.NewGuid();
-            state = new ProjectState();
+            state = new ProjectState(new Object[0]);
             sut = new ProjectAggregate(state);
         }
 
@@ -121,6 +121,34 @@ namespace UnitTests.Domain
         public void it_should_throw()
         {
             Assert.Throws<InvalidOperationException>(() => sut.Create(projectId, null));
+        }
+    }
+
+    public class when_setting_the_cem : project_aggregate_specs
+    {
+        private Guid staffId;
+        private string name ="Foo";
+        private Guid projectId = Guid.NewGuid();
+
+        protected override void Given()
+        {
+            base.Given();
+            staffId = Guid.NewGuid();
+            sut = new ProjectAggregate(new ProjectState(new Object[0]));
+            sut.Create(projectId, name);
+            ((IAggregate)sut).ClearUncommittedEvents();
+        }
+
+        protected override void When()
+        {
+            sut.SetCem(staffId);
+        }
+
+        [Then]
+        public void it_should_trigger_a_cem_set_event()
+        {
+            Assert.That(GetUncommittedEvents().Count(), Is.EqualTo(1));
+            Assert.That(GetUncommittedEvents().First(), Is.TypeOf<CemSet>());
         }
     }
 }

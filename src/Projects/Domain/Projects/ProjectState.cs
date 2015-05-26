@@ -9,7 +9,8 @@ namespace Projects.Domain
     {
         public ProjectState(IEnumerable<object> events)
         {
-            throw new NotImplementedException();
+            foreach (var @event in events)
+                Modify(@event);
         }
 
         public Guid Id { get; private set; }
