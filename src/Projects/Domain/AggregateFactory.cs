@@ -7,12 +7,6 @@ namespace Projects.Domain
     {
         public T Create<T>(IEnumerable<object> events) where T : class, IAggregate
         {
-            if (typeof (T) == typeof (SampleAggregate))
-            {
-                var state = new SampleState(events);
-                return new SampleAggregate(state) as T;
-            }
-
             if (typeof (T) == typeof (ProjectAggregate))
             {
                 var state = new ProjectState(events);

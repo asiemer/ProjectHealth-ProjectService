@@ -31,15 +31,20 @@ namespace Projects.Contracts.Commands
         public Guid[] StaffIds { get; set; }
     }
 
+    public class AddMetrics
+    {
+        public Guid Id { get; set; }
+        public Guid[] MetricIds { get; set; }
+    }
+
     public class RemoveMetrics
     {
         public Guid Id { get; set; }
         public Guid[] MetricIds { get; set; }
     }
 
-    public class AddMetrics
+    public class SuspendProject
     {
         public Guid Id { get; set; }
-        public Guid[] MetricIds { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using log4net;
 using log4net.Config;
 using Projects.Domain;
 using Projects.Infrastructure;
+using Projects.Services;
 using StatsdClient;
 using Projects.ReadModel.Observers;
 using Projects.ReadModel.Providers;
@@ -28,9 +29,13 @@ namespace Projects
                 init.For<IRepository>().Use(c => _repository);
                 init.For<IApplicationSettings>().Use<ApplicationSettings>();
                 init.For<IUniqueKeyGenerator>().Use<UniqueKeyGenerator>();
-                init.For<ISampleApplicationService>().Use<SampleApplicationService>();
-                init.For<ISamplesProvider>().Use<SamplesProvider>();
+                init.For<IProjectApplicationService>().Use<ProjectApplicationService>();
+                init.For<IProjectsProvider>().Use<ProjectsProvider>();
                 init.For<ILog>().Singleton().Use(c => LogManager.GetLogger("Projects"));
+
+                //***************** MOCKS ************************************
+                init.For<IMetricsProvider>().Use<MetricsProviderMock>();
+                //************************************************************
             });
             GlobalConfiguration.Configuration.DependencyResolver =
                 new StructureMapResolver(ObjectFactory.Container);

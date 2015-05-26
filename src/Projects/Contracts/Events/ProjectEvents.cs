@@ -1,4 +1,5 @@
 ﻿using System;
+using Projects.Domain;
 
 namespace Projects.Contracts.Events
 {
@@ -6,6 +7,7 @@ namespace Projects.Contracts.Events
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public MetricInfo[] DefaultMetrics { get; set; }
     }
 
     public class CemSet
@@ -35,12 +37,17 @@ namespace Projects.Contracts.Events
     public class MetricsAdded
     {
         public Guid Id { get; set; }
-        public Guid[] MetricIds { get; set; }
+        public MetricInfo[] Metrics { get; set; }
     }
 
     public class MetricsRemoved
     {
         public Guid Id { get; set; }
-        public Guid[] MetricIds { get; set; }
+        public MetricInfo[] Metrics { get; set; }
+    }
+
+    public class ProjectSuspended
+    {
+        public Guid Id { get; set; }
     }
 }

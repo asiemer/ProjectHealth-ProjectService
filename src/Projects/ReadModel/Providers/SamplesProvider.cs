@@ -6,18 +6,18 @@ using Projects.ReadModel.Views;
 
 namespace Projects.ReadModel.Providers
 {
-    public interface ISamplesProvider : IProvider<SampleView>
+    public interface IProjectsProvider : IProvider<ProjectView>
     {
-        Task<IEnumerable<SampleView>> Get(string name);
+        Task<IEnumerable<ProjectView>> Get(string name);
     }
 
-    public class SamplesProvider : MongoDbProvider<SampleView>, ISamplesProvider
+    public class ProjectsProvider : MongoDbProvider<ProjectView>, IProjectsProvider
     {
-        public SamplesProvider(IApplicationSettings applicationSettings) : base(applicationSettings)
+        public ProjectsProvider(IApplicationSettings applicationSettings) : base(applicationSettings)
         {
         }
 
-        public async Task<IEnumerable<SampleView>> Get(string name)
+        public async Task<IEnumerable<ProjectView>> Get(string name)
         {
             var collection = GetCollection();
             var items = await collection.Find(x => x.Name.StartsWith(name)).ToListAsync();

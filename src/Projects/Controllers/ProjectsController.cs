@@ -10,18 +10,18 @@ namespace Projects.Controllers
     [RoutePrefix("api/projects")]
     public class ProjectsController : ApiController
     {
-        private readonly IProjectsApplicationService _projectsApplicationService;
+        private readonly IProjectApplicationService _projectApplicationService;
 
-        public ProjectsController(IProjectsApplicationService projectsApplicationService)
+        public ProjectsController(IProjectApplicationService projectApplicationService)
         {
-            _projectsApplicationService = projectsApplicationService;
+            _projectApplicationService = projectApplicationService;
         }
 
         [HttpPost]
         [Route("")]
         public HttpResponseMessage Create(CreateProjectRequest req)
         {
-            var id = _projectsApplicationService.When(new CreateProject
+            var id = _projectApplicationService.Create(new CreateProject
             {
                 Name = req.Name
             });
@@ -32,42 +32,49 @@ namespace Projects.Controllers
         [Route("{projectId}/cem")]
         public void SetClientEngagementManager(Guid projectId, [FromBody]SetCemRequest req)
         {
-            _projectsApplicationService.Execute(new SetCem{Id = projectId, StaffId = req.StaffId});
+            _projectApplicationService.Execute(new SetCem{Id = projectId, StaffId = req.StaffId});
         }
 
         [HttpPost]
         [Route("{projectId}/pm")]
         public void SetProjectManager(Guid projectId, [FromBody]SetPmRequest req)
         {
-            _projectsApplicationService.Execute(new SetPm{Id = projectId, StaffId = req.StaffId});
+            _projectApplicationService.Execute(new SetPm{Id = projectId, StaffId = req.StaffId});
         }
 
         [HttpPost]
-        [Route("{projectId}/team/add")]
+        [Route("{projectId}/teamMembers/add")]
         public void AddTeamMembers(Guid projectId, [FromBody]AddTeamMembersRequest req)
         {
-            _projectsApplicationService.Execute(new AddTeamMembers { Id = projectId, StaffIds = req.StaffIds });
+            _projectApplicationService.Execute(new AddTeamMembers { Id = projectId, StaffIds = req.StaffIds });
         }
 
         [HttpPost]
-        [Route("{projectId}/team/remove")]
+        [Route("{projectId}/teamMembers/remove")]
         public void RemoveTeamMembers(Guid projectId, [FromBody]RemoveTeamMembersRequest req)
         {
-            _projectsApplicationService.Execute(new RemoveTeamMembers { Id = projectId, StaffIds = req.StaffIds });
+            _projectApplicationService.Execute(new RemoveTeamMembers { Id = projectId, StaffIds = req.StaffIds });
         }
 
         [HttpPost]
         [Route("{projectId}/metrics/add")]
         public void AddMetrics(Guid projectId, [FromBody]AddMetricsRequest req)
         {
-            _projectsApplicationService.Execute(new AddMetrics { Id = projectId, MetricIds = req.MetricIds });
+            _projectApplicationService.Execute(new AddMetrics { Id = projectId, MetricIds = req.MetricIds });
         }
 
         [HttpPost]
         [Route("{projectId}/metrics/remove")]
         public void RemoveMetrics(Guid projectId, [FromBody]RemoveMetricsRequest req)
         {
-            _projectsApplicationService.Execute(new RemoveMetrics { Id = projectId, MetricIds = req.MetricIds });
+            _projectApplicationService.Execute(new RemoveMetrics { Id = projectId, MetricIds = req.MetricIds });
+        }
+
+        [HttpPost]
+        [Route("{projectId}/suspend")]
+        public void Suspend(Guid projectId)
+        {
+            _projectApplicationService.Execute(new SuspendProject { Id = projectId });
         }
     }
 

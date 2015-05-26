@@ -8,7 +8,7 @@ namespace Projects.ReadModel.Observers
     {
         public IEnumerable<object> GetObservers(IProjectionWriterFactory factory)
         {
-            yield return new SamplesObserver(factory.GetProjectionWriter<SampleView>());
+            yield return new ProjectsObserver(factory.GetProjectionWriter<ProjectView>());
         }
     }
 }

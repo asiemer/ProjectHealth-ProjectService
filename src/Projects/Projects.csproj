@@ -124,7 +124,6 @@
     <Compile Include="Contracts\Events\ProjectEvents.cs" />
     <Compile Include="Controllers\AopController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
-    <Compile Include="Controllers\SamplesController.cs" />
     <Compile Include="Domain\Base\AggregateBase.cs" />
     <Compile Include="Domain\AggregateFactory.cs" />
     <Compile Include="Domain\Base\IAggregate.cs" />
@@ -132,14 +131,13 @@
     <Compile Include="Domain\Base\IRepository.cs" />
     <Compile Include="Domain\Base\RedirectToWhen.cs" />
     <Compile Include="Domain\Base\IState.cs" />
+    <Compile Include="ReadModel\Observers\ProjectsObserver.cs" />
+    <Compile Include="Services\IMetricsProvider.cs" />
     <Compile Include="Domain\Projects\ProjectAggregate.cs" />
     <Compile Include="Domain\Projects\ProjectApplicationService.cs" />
     <Compile Include="Domain\Projects\ProjectState.cs" />
-    <Compile Include="Domain\Samples\SampleAggregate.cs" />
-    <Compile Include="Domain\Samples\SampleApplicationService.cs" />
     <Compile Include="Contracts\Events\SampleEvents.cs" />
     <Compile Include="Contracts\Commands\SampleCommands.cs" />
-    <Compile Include="Domain\Samples\SampleState.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -155,10 +153,9 @@
     <Compile Include="Infrastructure\UniqueKeyGenerator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Infrastructure\IProjectionWriter.cs" />
-    <Compile Include="ReadModel\Observers\SamplesObserver.cs" />
     <Compile Include="Infrastructure\MongoDbProvider.cs" />
     <Compile Include="ReadModel\Providers\SamplesProvider.cs" />
-    <Compile Include="ReadModel\Views\SampleView.cs" />
+    <Compile Include="ReadModel\Views\ProjectView.cs" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
