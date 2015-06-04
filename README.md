@@ -1,5 +1,5 @@
 #General
-This is `Iteration Zero` for projects implemented as Micro Services using CQRS, DDD and Event Sourcing.
+This is the `Projects` component of the Heart Beat project implemented as Micro Services using CQRS, DDD and Event Sourcing.
 
 This project uses
 
@@ -24,6 +24,7 @@ You need to have the following installed on your system
 - Execute the batch file `ClickToBuild.cmd` located in the folder containing the cloned repository to build and test the solution. 
 - Alternatively open a PowerShell command prompt and navigate to the folder containing the cloned repository. Build the solution by invoking the following command `.\psake\psake.ps1 .\default.ps1 Test`
 
+- Create a sub-folder `data\mongodb` and a sub-folder `logs\mongodb` in the solution folder 
 - Run MongoDB as a Windows service by using this command
 
 ```
@@ -33,7 +34,7 @@ You need to have the following installed on your system
     echo "   destination: file" >> .\MongoDb\mongod.cfg
     echo "   path: $path\logs\mongodb\mongod.log" >> .\MongoDb\mongod.cfg
     echo "storage:" >> .\MongoDb\mongod.cfg
-    echo "   dbPath: C:\dev\ProjectHealth\Projects\data\mongodb" >> .\MongoDb\mongod.cfg
+    echo "   dbPath: $path\data\mongodb" >> .\MongoDb\mongod.cfg
     sc.exe create MongoDB binPath= "$path\mongodb\mongod.exe --service --config=$path\mongodb\mongod.cfg"  DisplayName= "MongoDB" start= "auto" 
     Start-Service MongoDB
 
@@ -42,31 +43,41 @@ You need to have the following installed on your system
 - Execute the batch file `RunGetEventStore.cmd` in the root folder of the repository to run GetEventStore. This will start GES with the data directory `..\Data\EventStore\Projects` listening at the default tcp-ip port 1113 and http port 2113. The default username is equal to `admin` and the default password is `changeit`.
 
 #Admin GES
-Open a browser and navigate to `localhost:2113/web/index.html`. Enter the credentials when asked (`admin`/`changeit`). Navigate to the `Stream Browser` tab. You should see a list of streams. Click on the one whose events you want to see, e.g. `SampleAggregate-<ID>` where `<ID>` is a Guid representing the ID of the aggregate instance. The list of events in the stream will be displayed starting with the most recent event.
+Open a browser and navigate to `localhost:2113/web/index.html`. Enter the credentials when asked (`admin`/`changeit`). Navigate to the `Stream Browser` tab. You should see a list of streams. Click on the one whose events you want to see, e.g. `ProjectAggregate-<ID>` where `<ID>` is a Guid representing the ID of the aggregate instance. The list of events in the stream will be displayed starting with the most recent event.
+
+#Admin MongoDB
+Install MongoVue (if can be used for free) which is one of the best admin tools for MongoDB. Create a new connection. For server just add `localhost`.
 
 #How to use
-Run the application. By default IIS Express will listen at port 3030. You can use the Postman REST client for Google Chrome to test the application. Iteration zero implements a `Samples` controller with multiple endpoints
+Run the application. By default IIS Express will listen at port 3030. You can use the Postman REST client for Google Chrome to test the application. Iteration zero implements a `Projects` controller with multiple endpoints
 ##GET requests
-1 `localhost:3030/api/samples/<sampleId>`
+1 `localhost:3030/api/projects`
 
-2 `localhost:3030/api/samples?name=<some name>`
+2 `localhost:3030/api/projects/<projectId>`
 
 ##POST requests
 
-1 ```localhost:3030/api/samples/start```
+1 `localhost:3030/api/projects/`
 
-2 ```localhost:3030/api/samples/<sampleId>/step1```
+2 `localhost:3030/api/projects/<projectId>/cem`
 
-3 ```localhost:3030/api/samples/<sampleId>/approve```
+3 `localhost:3030/api/projects/<projectId>/pm`
 
-4 ```localhost:3030/api/samples/<sampleId>/cancel```
+4 `localhost:3030/api/projects/<projectId>/teamMembers/add`
+
+5 `localhost:3030/api/projects/<projectId>/teamMembers/remove`
+
+etc.
 
 the POST requests to the first endpoint expects a body
 
-```{ name: "Some sample name" }```
+`{ name: "Some project name" }`
 
-whilst the POST requests to the second endpoint expects a body like this
+whilst the POST requests to the second and third endpoints expects a body like this
 
-```{ quantity: 12, dueDate: "2015-05-20" }```
+`{ staffId: "<some GUID>" }`
 
-the POST requests to the third and fourth endpoints expect no body 
+the POST requests to the fourth and fifth endpoints expect
+
+`{ staffIds: [<array of GUIDs>] }`
+ 
