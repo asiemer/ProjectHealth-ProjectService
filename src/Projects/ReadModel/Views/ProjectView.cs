@@ -17,5 +17,12 @@ namespace Projects.ReadModel.Views
         public Guid? CemId { get; set; }
         public Guid? PmId { get; set; }
         public List<Guid> Team { get; set; }
+        public List<MetricView> Metrics { get; set; }
+    }
+
+    public class MetricView
+    {
+        public Guid MetricId { get; set; }
+        public bool IsDefault { get; set; }
     }
 }
