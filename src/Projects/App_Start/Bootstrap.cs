@@ -67,7 +67,7 @@ namespace Projects
             _repository = new GesRepository(connection, factory);
         }
 
-        private static void InitEventsDispatcher(IApplicationSettings applicationSettings, ILog logger)
+        private async static void InitEventsDispatcher(IApplicationSettings applicationSettings, ILog logger)
         {
             var endpoint = GetEventStoreEndpoint(applicationSettings);
             var connection = EventStoreConnection.Create(endpoint);
@@ -75,7 +75,8 @@ namespace Projects
             _dispatcher = new EventsDispatcher(logger, applicationSettings);
             var factory = new MongoDbAtomicWriterFactory(applicationSettings.MongoDbConnectionString, applicationSettings.MongoDbName);
             var observers = new ObserverRegistry().GetObservers(factory);
-            _dispatcher.Start(connection, observers);
+            var repo = new MongoDbLastProcessedEventRepository(applicationSettings.MongoDbConnectionString, applicationSettings.MongoDbName);
+            await _dispatcher.Start(connection, observers, repo);
         }
 
         private static IPEndPoint GetEventStoreEndpoint(IApplicationSettings applicationSettings)

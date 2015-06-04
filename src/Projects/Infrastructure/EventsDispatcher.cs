@@ -15,6 +15,7 @@ namespace Projects.Infrastructure
         private readonly IApplicationSettings _applicationSettings;
         private Dictionary<Type, Info[]> _dictionary = new Dictionary<Type, Info[]>();
         private EventStoreAllCatchUpSubscription _subscription;
+        private ILastProcessedEventRepository _lastProcessedEventRepository;
 
         public EventsDispatcher(ILog log, IApplicationSettings applicationSettings)
         {
@@ -22,11 +23,12 @@ namespace Projects.Infrastructure
             _applicationSettings = applicationSettings;
         }
 
-        public void Start(IEventStoreConnection connection, IEnumerable<object> observers)
+        public async Task Start(IEventStoreConnection connection, IEnumerable<object> observers, ILastProcessedEventRepository lastProcessedEventRepository)
         {
+            _lastProcessedEventRepository = lastProcessedEventRepository;
             WireUpObservers(observers);
             var credentials = new UserCredentials(_applicationSettings.GesUserName, _applicationSettings.GesPassword);
-            var lastCheckpoint = Position.Start;
+            var lastCheckpoint = await lastProcessedEventRepository.Get();
 
             _subscription = connection.SubscribeToAllFrom(lastCheckpoint, false,
                 EventAppeared,
@@ -54,6 +56,8 @@ namespace Projects.Infrastructure
             {
                 var e = re.DeserializeEvent();
                 Dispatch(e).Wait();
+                if (re.OriginalPosition.HasValue)
+                    _lastProcessedEventRepository.Save(re.OriginalPosition.Value).Wait();
             }
             catch (Exception exception)
             {
