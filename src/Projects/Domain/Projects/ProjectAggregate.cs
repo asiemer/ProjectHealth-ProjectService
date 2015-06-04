@@ -103,8 +103,8 @@ namespace Projects.Domain
         public void Suspend()
         {
             ThrowIfNotExists("suspend");
-            if (State.Status != ProjectStatus.Ready)
-                throw new InvalidOperationException("Cannot suspend a project that is not is status ready");
+            if (State.Status != ProjectStatus.Active)
+                throw new InvalidOperationException("Cannot Suspend a project that is not is status Active");
 
             Apply(new ProjectSuspended { Id = State.Id });
         }

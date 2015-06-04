@@ -3,7 +3,7 @@
     public enum ProjectStatus
     {
         Draft = 1,
-        Ready = 2,
+        Active = 2,
         Suspended = 3
     }
 }

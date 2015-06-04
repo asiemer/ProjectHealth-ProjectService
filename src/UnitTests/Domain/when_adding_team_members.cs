@@ -15,7 +15,7 @@ namespace UnitTests.Domain
         {
             return new[]
             {
-                new ProjectCreated {Id = projectId, Name = projectName}
+                new ProjectCreated {Id = projectId, Name = projectName }
             };
         }
 

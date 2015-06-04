@@ -47,6 +47,7 @@ namespace UnitTests.Domain
             return new object[]
             {
                 new ProjectCreated { Id = projectId, Name = projectName, DefaultMetrics = defaultMetrics },
+                new ProjectSuspended{Id = projectId}
             };
         }
 

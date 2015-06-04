@@ -43,9 +43,9 @@ namespace UnitTests.Domain
         }
 
         [Then]
-        public void it_should_set_status_to_draft()
+        public void it_should_set_status_to_active()
         {
-            Assert.That(state.Status, Is.EqualTo(ProjectStatus.Draft));
+            Assert.That(state.Status, Is.EqualTo(ProjectStatus.Active));
         }
 
         [Then]

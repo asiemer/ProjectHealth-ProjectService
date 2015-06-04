@@ -38,8 +38,8 @@ namespace Projects.Domain
         private void When(ProjectCreated e)
         {
             Id = e.Id;
-            Status = ProjectStatus.Draft;
-            Metrics = e.DefaultMetrics
+            Status = ProjectStatus.Active;
+            Metrics = (e.DefaultMetrics ?? new MetricInfo[0])
                 .Select(x => new MetricState {Id = x.MetricId, IsDefault = true})
                 .ToList();
         }
