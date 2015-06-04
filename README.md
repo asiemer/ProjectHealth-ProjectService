@@ -81,3 +81,6 @@ the POST requests to the fourth and fifth endpoints expect
 
 `{ staffIds: [<array of GUIDs>] }`
  
+#Manage the read model
+There is a quick and dirty command line application that currently just dumps the existing read model in MongoDB and re-creates it from scratch. For this tool to work both services MongoDB and GES need to be up and running.
+The tool is called `ReadModelTool` and can be run from the command line or by double clicking onto `ReadModelTool.exe`. The settings can be changed in the `ReadModelTool.exe.config`.
