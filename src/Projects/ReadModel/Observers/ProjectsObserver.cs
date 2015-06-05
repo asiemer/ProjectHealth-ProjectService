@@ -20,12 +20,26 @@ namespace Projects.ReadModel.Observers
 
         public async Task When(ProjectCreated e)
         {
-            await _writer.Add(e.Id, new ProjectView
+            var projectView = new ProjectView
             {
                 Id = e.Id,
                 Name = e.Name,
-                Status = ProjectStatus.Active
-            });
+                Status = ProjectStatus.Active,
+                Metrics = CreateMetricViews(e.DefaultMetrics)
+            };
+
+            await _writer.Add(e.Id, projectView);
+        }
+
+        private List<MetricView> CreateMetricViews(MetricInfo[] defaultMetrics)
+        {
+            var metricViews = new List<MetricView>();
+            foreach (var defaultMetric in defaultMetrics)
+            {
+                //Need to set default value to -1, so user is forced to update specific project in the future.
+                metricViews.Add(new MetricView {IsDefault = defaultMetric.IsDefault, MetricId = defaultMetric.MetricId, Value = -1});
+            }
+            return metricViews;
         }
 
         public async Task When(ProjectSuspended e)
