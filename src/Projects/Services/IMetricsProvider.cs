@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Projects.Services
 {
@@ -11,12 +13,34 @@ namespace Projects.Services
     {
         public Metric[] GetCompanyMetrics()
         {
-            return new []
+            //Placed here since this is only a temporary location
+            var fullPath = AppDomain.CurrentDomain.BaseDirectory + "\\Metrics.csv";
+            var reader = new StreamReader(File.OpenRead(@fullPath));
+            var companyMetrics = new List<Metric>();
+            while (!reader.EndOfStream)
             {
-                new Metric{Id = Guid.NewGuid(), Name = "Has unit tests", IsDefault = true, Weight = 3, AllowedAge = 2}, 
-                new Metric{Id = Guid.NewGuid(), Name = "Has integration tests", IsDefault = true, Weight = 2, AllowedAge = 2}, 
-                new Metric{Id = Guid.NewGuid(), Name = "Has CI build", IsDefault = true, Weight = 4, AllowedAge = 2}, 
-                new Metric{Id = Guid.NewGuid(), Name = "Code in repo on GitHub/BitBucket/VSO", IsDefault = true, Weight = 4, AllowedAge = 1}, 
+                //Skip header row
+                var headerLine = reader.ReadLine();
+
+                var line = reader.ReadLine();
+                if (line != null)
+                {
+                    companyMetrics.Add(CreateMetric(line.Split(',')));
+                }
+            }
+            return companyMetrics.ToArray();
+        }
+
+        private Metric CreateMetric(string[] metricRow)
+        {
+            return new Metric
+            {
+                Id = Guid.NewGuid(),
+                Name = metricRow[0],
+                IsDefault = (metricRow[1] == "TRUE"),
+                Weight = Convert.ToInt32(metricRow[2]),
+                AllowedAge = Convert.ToInt32(metricRow[3]),
+                RequiresAlert = (metricRow[4] == "TRUE"),
             };
         }
     }
