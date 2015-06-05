@@ -25,5 +25,6 @@ namespace Projects.ReadModel.Views
         public Guid MetricId { get; set; }
         public bool IsDefault { get; set; }
         public int Value { get; set; }
+        public int Weight { get; set; }
     }
 }

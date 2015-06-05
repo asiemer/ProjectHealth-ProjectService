@@ -37,7 +37,7 @@ namespace Projects.ReadModel.Observers
             foreach (var defaultMetric in defaultMetrics)
             {
                 //Need to set default value to -1, so user is forced to update specific project in the future.
-                metricViews.Add(new MetricView {IsDefault = defaultMetric.IsDefault, MetricId = defaultMetric.MetricId, Value = -1});
+                metricViews.Add(new MetricView {IsDefault = defaultMetric.IsDefault, MetricId = defaultMetric.MetricId, Value = -1, Weight = defaultMetric.Weight });
             }
             return metricViews;
         }
