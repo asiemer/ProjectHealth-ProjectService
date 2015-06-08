@@ -34,7 +34,8 @@ namespace Projects.Domain
                 {
                     MetricId = x.Id,
                     IsDefault = x.IsDefault,
-                    Weight = x.Weight
+                    Weight = x.Weight,
+                    Value = x.Value
                 })
                 .ToArray();
             InternalAct(id, aggregate => aggregate.Create(id, cmd.Name, metrics));

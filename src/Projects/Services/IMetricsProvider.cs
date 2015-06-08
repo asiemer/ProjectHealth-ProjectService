@@ -46,6 +46,8 @@ namespace Projects.Services
                 Weight = Convert.ToInt32(metricRow[2]),
                 AllowedAge = Convert.ToInt32(metricRow[3]),
                 RequiresAlert = (metricRow[4] == "TRUE"),
+                //Default Value for new metrics on a project
+                Value = -1
             };
         }
     }
@@ -58,5 +60,6 @@ namespace Projects.Services
         public bool IsDefault { get; set; }
         public int AllowedAge { get; set; }
         public bool RequiresAlert { get; set; }
+        public int Value { get; set; }
     }
 }

@@ -27,7 +27,6 @@ namespace Projects.ReadModel.Observers
                 Status = ProjectStatus.Active,
                 Metrics = e.DefaultMetrics.ToMetricViews().ToList()
             };
-
             await _writer.Add(e.Id, projectView);
         }
 
@@ -79,7 +78,7 @@ namespace Projects.ReadModel.Observers
     {
         public static IEnumerable<MetricView> ToMetricViews(this IEnumerable<MetricInfo> list)
         {
-            return list.Select(x => new MetricView { MetricId = x.MetricId, IsDefault = x.IsDefault, Weight = x.Weight, Value = -1});
+            return list.Select(x => new MetricView { MetricId = x.MetricId, IsDefault = x.IsDefault, Weight = x.Weight, Value = x.Value});
         }
     }
 }
