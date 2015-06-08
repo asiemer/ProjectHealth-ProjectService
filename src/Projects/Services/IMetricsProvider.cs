@@ -31,23 +31,21 @@ namespace Projects.Services
                 var line = reader.ReadLine();
                 if (line != null)
                 {
-                    companyMetrics.Add(CreateMetric(line.Split(',')));
+                    companyMetrics.Add(CreateDefaultCompanyMetric(line.Split(',')));
                 }
             }
         }
 
-        private Metric CreateMetric(string[] metricRow)
+        public Metric CreateDefaultCompanyMetric(string[] metricRow)
         {
-            return new Metric
+             return new Metric
             {
                 Id = Guid.NewGuid(),
                 Name = metricRow[0],
                 IsDefault = (metricRow[1] == "TRUE"),
                 Weight = Convert.ToInt32(metricRow[2]),
                 AllowedAge = Convert.ToInt32(metricRow[3]),
-                RequiresAlert = (metricRow[4] == "TRUE"),
-                //Default Value for new metrics on a project
-                Value = -1
+                RequiresAlert = (metricRow[4] == "TRUE")
             };
         }
     }
