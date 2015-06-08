@@ -20,6 +20,12 @@ namespace Projects.Services
             
             //Skip header row
             var headerLine = reader.ReadLine();
+            AddMetricsFromFile(reader, companyMetrics);
+            return companyMetrics.ToArray();
+        }
+
+        private void AddMetricsFromFile(StreamReader reader, List<Metric> companyMetrics)
+        {
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
@@ -28,7 +34,6 @@ namespace Projects.Services
                     companyMetrics.Add(CreateMetric(line.Split(',')));
                 }
             }
-            return companyMetrics.ToArray();
         }
 
         private Metric CreateMetric(string[] metricRow)
