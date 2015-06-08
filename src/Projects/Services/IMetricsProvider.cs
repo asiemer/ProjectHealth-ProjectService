@@ -25,7 +25,17 @@ namespace Projects.Services
             
             //Skip header row
             var headerLine = reader.ReadLine();
-            AddMetricsFromFile(reader, companyMetrics);
+            try
+            {
+                AddMetricsFromFile(reader, companyMetrics);
+            }
+            catch (Exception e)
+            {
+                //Handle error better
+                throw new Exception ("One of the columns has values that are formatted incorrectly.");
+            }
+            
+
             return companyMetrics.ToArray();
         }
 
@@ -41,17 +51,19 @@ namespace Projects.Services
             }
         }
 
+        //This could be pulled out into a static mapper.
         public Metric CreateDefaultCompanyMetric(string[] metricRow)
         {
-             return new Metric
-            {
-                Id = Guid.NewGuid(),
-                Name = metricRow[0],
-                IsDefault = (metricRow[1] == "TRUE"),
-                Weight = Convert.ToInt32(metricRow[2]),
-                AllowedAge = Convert.ToInt32(metricRow[3]),
-                RequiresAlert = (metricRow[4] == "TRUE")
-            };
+            var metricToReturn = new Metric();
+            metricToReturn.Id = Guid.NewGuid();
+            metricToReturn.Name = metricRow[0];
+            metricToReturn.IsDefault = (metricRow[1] == "TRUE");
+            metricToReturn.Weight = Convert.ToInt32(metricRow[2]);
+            metricToReturn.AllowedAge = Convert.ToInt32(metricRow[3]);
+            metricToReturn.RequiresAlert = (metricRow[4] == "TRUE");
+
+
+            return metricToReturn;
         }
     }
 

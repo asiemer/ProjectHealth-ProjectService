@@ -57,6 +57,31 @@ namespace IntegrationTests.Services.MetricsProviderMockTests
         }
     }
 
+    public class when_creating_company_metrics_from_invalid_weight_in_InvalidWeight_File
+    {
+        private MetricsProviderMock _metricsProviderMock;
+        private Metric[] _metrics;
+
+        [SetUp]
+        protected void When()
+        {
+            var fakeMetricsFileGetter = new FakeMetricsFileGetter("InvalidWeight.csv");
+            _metricsProviderMock = new MetricsProviderMock(fakeMetricsFileGetter);
+        }
+
+        [Then]
+        public void GetCompanyMetrics_should_throw_format_exception()
+        {
+            var testDelegate = new TestDelegate(MethodThatShouldThrow);
+            Assert.Catch(testDelegate);
+        }
+
+        private void MethodThatShouldThrow()
+        {
+            _metricsProviderMock.GetCompanyMetrics();
+        }
+    }
+
     public class FakeMetricsFileGetter : IMetricsFileGetter
     {
         private readonly string _fileName;

@@ -48,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="TestFiles\InvalidMetrics.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\InvalidWeight.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestFiles\Metrics.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
