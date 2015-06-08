@@ -25,21 +25,10 @@ namespace Projects.ReadModel.Observers
                 Id = e.Id,
                 Name = e.Name,
                 Status = ProjectStatus.Active,
-                Metrics = CreateMetricViews(e.DefaultMetrics)
+                Metrics = e.DefaultMetrics.ToMetricViews().ToList()
             };
 
             await _writer.Add(e.Id, projectView);
-        }
-
-        private List<MetricView> CreateMetricViews(MetricInfo[] defaultMetrics)
-        {
-            var metricViews = new List<MetricView>();
-            foreach (var defaultMetric in defaultMetrics)
-            {
-                //Default value to -1, so user is forced to update specific project in the future.
-                metricViews.Add(new MetricView {IsDefault = defaultMetric.IsDefault, MetricId = defaultMetric.MetricId, Value = -1, Weight = defaultMetric.Weight });
-            }
-            return metricViews;
         }
 
         public async Task When(ProjectSuspended e)
@@ -90,7 +79,7 @@ namespace Projects.ReadModel.Observers
     {
         public static IEnumerable<MetricView> ToMetricViews(this IEnumerable<MetricInfo> list)
         {
-            return list.Select(x => new MetricView { MetricId = x.MetricId, IsDefault = x.IsDefault });
+            return list.Select(x => new MetricView { MetricId = x.MetricId, IsDefault = x.IsDefault, Weight = x.Weight, Value = -1});
         }
     }
 }
