@@ -43,10 +43,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\MetricsProviderMockTests\when_creating_company_metric_from_MetricTestFile.cs" />
     <Compile Include="SpecificationBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="TestFiles\Metrics.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Projects\Projects.csproj">
+      <Project>{A54676F3-E452-4D76-96A3-F0265CE48ADF}</Project>
+      <Name>Projects</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

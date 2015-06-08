@@ -34,6 +34,7 @@ namespace Projects
                 init.For<ILog>().Singleton().Use(c => LogManager.GetLogger("Projects"));
 
                 //***************** MOCKS ************************************
+                init.For<IMetricsFileGetter>().Use<MetricsFileGetter>();
                 init.For<IMetricsProvider>().Use<MetricsProviderMock>();
                 //************************************************************
             });

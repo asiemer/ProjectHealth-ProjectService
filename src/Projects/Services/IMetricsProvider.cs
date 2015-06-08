@@ -11,11 +11,16 @@ namespace Projects.Services
 
     public class MetricsProviderMock : IMetricsProvider
     {
+        private readonly IMetricsFileGetter _metricsFileGetter;
+
+        public MetricsProviderMock(IMetricsFileGetter metricsFileGetter)
+        {
+            _metricsFileGetter = metricsFileGetter;
+        }
+
         public Metric[] GetCompanyMetrics()
         {
-            //Placed here since this is only a temporary location
-            var fullPath = AppDomain.CurrentDomain.BaseDirectory + "\\Metrics.csv";
-            var reader = new StreamReader(File.OpenRead(@fullPath));
+            var reader = _metricsFileGetter.GetMetricsFile();
             var companyMetrics = new List<Metric>();
             
             //Skip header row
