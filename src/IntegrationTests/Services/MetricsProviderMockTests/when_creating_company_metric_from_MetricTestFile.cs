@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using Projects.Services;
 
@@ -17,9 +18,10 @@ namespace IntegrationTests.Services.MetricsProviderMockTests
         }
 
         [Then]
-        public void first_metric_should_equal()
+        public void there_should_be_three_valid_metrics()
         {
-            _metricsProviderMock.GetCompanyMetrics();
+            var metrics = _metricsProviderMock.GetCompanyMetrics();
+            Assert.That(metrics.Count(), Is.EqualTo(3));
         }
     }
 
