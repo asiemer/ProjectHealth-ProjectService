@@ -17,11 +17,11 @@ namespace Projects.Services
             var fullPath = AppDomain.CurrentDomain.BaseDirectory + "\\Metrics.csv";
             var reader = new StreamReader(File.OpenRead(@fullPath));
             var companyMetrics = new List<Metric>();
+            
+            //Skip header row
+            var headerLine = reader.ReadLine();
             while (!reader.EndOfStream)
             {
-                //Skip header row
-                var headerLine = reader.ReadLine();
-
                 var line = reader.ReadLine();
                 if (line != null)
                 {
