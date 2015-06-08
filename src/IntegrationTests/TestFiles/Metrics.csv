@@ -1,4 +1,4 @@
 Name,IsDefault,Weight,AllowedAge,RequiresAlert
 Metric 1,TRUE,0,1,FALSE
 Metric 2,TRUE,0,1,FALSE
-Metric 3,TRUE,0,1,FALSE
+Metric 3,TRUE,-50,1,FALSE
