@@ -51,18 +51,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="TestFiles\BlankValue.csv">
+    <EmbeddedResource Include="TestFiles\BlankValue.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="TestFiles\InvalidMetrics.csv">
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestFiles\InvalidMetrics.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="TestFiles\InvalidWeight.csv">
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestFiles\InvalidWeight.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="TestFiles\Metrics.csv">
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestFiles\Metrics.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

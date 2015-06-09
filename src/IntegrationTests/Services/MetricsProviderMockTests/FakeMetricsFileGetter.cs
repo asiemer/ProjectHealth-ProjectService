@@ -1,5 +1,5 @@
-using System;
 using System.IO;
+using System.Reflection;
 using Projects.Services;
 
 namespace IntegrationTests.Services.MetricsProviderMockTests
@@ -7,6 +7,7 @@ namespace IntegrationTests.Services.MetricsProviderMockTests
     public class FakeMetricsFileGetter : IMetricsFileGetter
     {
         private readonly string _fileName;
+        private const string TestFilesNamespace = "IntegrationTests.TestFiles";
 
         public FakeMetricsFileGetter(string fileName)
         {
@@ -15,8 +16,10 @@ namespace IntegrationTests.Services.MetricsProviderMockTests
 
         public StreamReader GetMetricsFile()
         {
-            var fullPath = AppDomain.CurrentDomain.BaseDirectory + "\\TestFiles\\" + _fileName;
-            return new StreamReader(File.OpenRead(@fullPath));
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName =  TestFilesNamespace + "." + _fileName;
+            var stream = assembly.GetManifestResourceStream(resourceName);
+            return new StreamReader(stream);
         }
     }
 }
