@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Projects.Services
 {
@@ -9,15 +12,66 @@ namespace Projects.Services
 
     public class MetricsProviderMock : IMetricsProvider
     {
+        private readonly IMetricsFileGetter _metricsFileGetter;
+
+        public MetricsProviderMock(IMetricsFileGetter metricsFileGetter)
+        {
+            _metricsFileGetter = metricsFileGetter;
+        }
+
         public Metric[] GetCompanyMetrics()
         {
-            return new []
+            var reader = _metricsFileGetter.GetMetricsFile();
+            var companyMetrics = new List<Metric>();
+            
+            //Skip header row
+            var headerLine = reader.ReadLine();
+            AddMetricsFromFile(reader, companyMetrics);
+            return companyMetrics.ToArray();
+        }
+
+        private void AddMetricsFromFile(StreamReader reader, List<Metric> companyMetrics)
+        {
+            while (!reader.EndOfStream)
             {
-                new Metric{Id = Guid.NewGuid(), Name = "Has unit tests", IsDefault = true, Weight = 3, AllowedAge = 2}, 
-                new Metric{Id = Guid.NewGuid(), Name = "Has integration tests", IsDefault = true, Weight = 2, AllowedAge = 2}, 
-                new Metric{Id = Guid.NewGuid(), Name = "Has CI build", IsDefault = true, Weight = 4, AllowedAge = 2}, 
-                new Metric{Id = Guid.NewGuid(), Name = "Code in repo on GitHub/BitBucket/VSO", IsDefault = true, Weight = 4, AllowedAge = 1}, 
-            };
+                var line = reader.ReadLine();
+                if (line != null)
+                {
+                    var valuesInRow = line.Split(',');
+                    var createdMetric = CreateDefaultCompanyMetric(valuesInRow);
+                    companyMetrics.Add(createdMetric);
+                }
+            }
+        }
+
+        public Metric CreateDefaultCompanyMetric(string[] metricRow)
+        {
+            var metricToReturn = new Metric();
+            if (metricRow.Contains(""))
+            {
+                throw new Exception("Check file to make sure all columns have values. Do not leave any blank.");
+            }
+            metricToReturn = TryCreateDefaultCompanyMetric(metricToReturn, metricRow);
+            return metricToReturn;
+        }
+
+        //This could be pulled out into a static mapper.
+        private Metric TryCreateDefaultCompanyMetric(Metric metricToReturn, string[] metricRow)
+        {
+            try
+            {
+                metricToReturn.Id = Guid.NewGuid();
+                metricToReturn.Name = metricRow[0];
+                metricToReturn.IsDefault = (metricRow[1] == "TRUE");
+                metricToReturn.Weight = Convert.ToInt32(metricRow[2]);
+                metricToReturn.AllowedAge = Convert.ToInt32(metricRow[3]);
+                metricToReturn.RequiresAlert = (metricRow[4] == "TRUE");
+            }
+            catch (FormatException e)
+            {
+                throw new Exception("One of the columns has values entered in the incorrect format.");
+            }
+            return metricToReturn;
         }
     }
 
@@ -29,5 +83,6 @@ namespace Projects.Services
         public bool IsDefault { get; set; }
         public int AllowedAge { get; set; }
         public bool RequiresAlert { get; set; }
+        public int Value { get; set; }
     }
 }

@@ -33,7 +33,9 @@ namespace Projects.Domain
                 .Select(x => new MetricInfo
                 {
                     MetricId = x.Id,
-                    IsDefault = x.IsDefault
+                    IsDefault = x.IsDefault,
+                    Weight = x.Weight,
+                    Value = x.Value
                 })
                 .ToArray();
             InternalAct(id, aggregate => aggregate.Create(id, cmd.Name, metrics));

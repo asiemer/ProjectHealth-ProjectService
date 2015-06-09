@@ -20,12 +20,14 @@ namespace Projects.ReadModel.Observers
 
         public async Task When(ProjectCreated e)
         {
-            await _writer.Add(e.Id, new ProjectView
+            var projectView = new ProjectView
             {
                 Id = e.Id,
                 Name = e.Name,
-                Status = ProjectStatus.Active
-            });
+                Status = ProjectStatus.Active,
+                Metrics = e.DefaultMetrics.ToMetricViews().ToList()
+            };
+            await _writer.Add(e.Id, projectView);
         }
 
         public async Task When(ProjectSuspended e)
@@ -76,7 +78,7 @@ namespace Projects.ReadModel.Observers
     {
         public static IEnumerable<MetricView> ToMetricViews(this IEnumerable<MetricInfo> list)
         {
-            return list.Select(x => new MetricView { MetricId = x.MetricId, IsDefault = x.IsDefault });
+            return list.Select(x => new MetricView { MetricId = x.MetricId, IsDefault = x.IsDefault, Weight = x.Weight, Value = x.Value});
         }
     }
 }

@@ -1,0 +1,2 @@
+Name,IsDefault,Weight,AllowedAge,RequiresAlert
+Metric 1,TRUE,invalid,1,FALSE
