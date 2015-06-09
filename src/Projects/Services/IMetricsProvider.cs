@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Projects.Services
 {
@@ -25,17 +26,7 @@ namespace Projects.Services
             
             //Skip header row
             var headerLine = reader.ReadLine();
-            try
-            {
-                AddMetricsFromFile(reader, companyMetrics);
-            }
-            catch (Exception e)
-            {
-                //Handle error better
-                throw new Exception ("One of the columns has values that are formatted incorrectly.");
-            }
-            
-
+            AddMetricsFromFile(reader, companyMetrics);
             return companyMetrics.ToArray();
         }
 
@@ -55,14 +46,29 @@ namespace Projects.Services
         public Metric CreateDefaultCompanyMetric(string[] metricRow)
         {
             var metricToReturn = new Metric();
-            metricToReturn.Id = Guid.NewGuid();
-            metricToReturn.Name = metricRow[0];
-            metricToReturn.IsDefault = (metricRow[1] == "TRUE");
-            metricToReturn.Weight = Convert.ToInt32(metricRow[2]);
-            metricToReturn.AllowedAge = Convert.ToInt32(metricRow[3]);
-            metricToReturn.RequiresAlert = (metricRow[4] == "TRUE");
+            if (metricRow.Contains(""))
+            {
+                throw new Exception("Check file to make sure all columns have values. Do not leave any blank.");
+            }
+            metricToReturn = TryCreateDefaultCompanyMetric(metricToReturn, metricRow);
+            return metricToReturn;
+        }
 
-
+        private Metric TryCreateDefaultCompanyMetric(Metric metricToReturn, string[] metricRow)
+        {
+            try
+            {
+                metricToReturn.Id = Guid.NewGuid();
+                metricToReturn.Name = metricRow[0];
+                metricToReturn.IsDefault = (metricRow[1] == "TRUE");
+                metricToReturn.Weight = Convert.ToInt32(metricRow[2]);
+                metricToReturn.AllowedAge = Convert.ToInt32(metricRow[3]);
+                metricToReturn.RequiresAlert = (metricRow[4] == "TRUE");
+            }
+            catch (FormatException e)
+            {
+                throw new Exception("One of the columns has values entered in the incorrect format.");
+            }
             return metricToReturn;
         }
     }

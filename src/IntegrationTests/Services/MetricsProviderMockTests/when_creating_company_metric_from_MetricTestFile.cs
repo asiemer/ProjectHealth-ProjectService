@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using Projects.Services;
 
@@ -54,47 +52,6 @@ namespace IntegrationTests.Services.MetricsProviderMockTests
         public void last_metrics_requiresAlert_should_be_zero()
         {
             Assert.That(!_metrics.Last().RequiresAlert);
-        }
-    }
-
-    public class when_creating_company_metrics_from_invalid_weight_in_InvalidWeight_File
-    {
-        private MetricsProviderMock _metricsProviderMock;
-        private Metric[] _metrics;
-
-        [SetUp]
-        protected void When()
-        {
-            var fakeMetricsFileGetter = new FakeMetricsFileGetter("InvalidWeight.csv");
-            _metricsProviderMock = new MetricsProviderMock(fakeMetricsFileGetter);
-        }
-
-        [Then]
-        public void GetCompanyMetrics_should_throw_format_exception()
-        {
-            var testDelegate = new TestDelegate(MethodThatShouldThrow);
-            Assert.Catch(testDelegate);
-        }
-
-        private void MethodThatShouldThrow()
-        {
-            _metricsProviderMock.GetCompanyMetrics();
-        }
-    }
-
-    public class FakeMetricsFileGetter : IMetricsFileGetter
-    {
-        private readonly string _fileName;
-
-        public FakeMetricsFileGetter(string fileName)
-        {
-            _fileName = fileName;
-        }
-
-        public StreamReader GetMetricsFile()
-        {
-            var fullPath = AppDomain.CurrentDomain.BaseDirectory + "\\TestFiles\\" + _fileName;
-            return new StreamReader(File.OpenRead(@fullPath));
         }
     }
 }
