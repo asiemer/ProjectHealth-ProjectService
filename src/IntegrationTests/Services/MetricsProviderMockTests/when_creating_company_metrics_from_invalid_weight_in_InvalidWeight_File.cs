@@ -1,4 +1,3 @@
-using System.Linq;
 using NUnit.Framework;
 using Projects.Services;
 
@@ -25,13 +24,7 @@ namespace IntegrationTests.Services.MetricsProviderMockTests
 
         private void MethodThatShouldThrow()
         {
-            var rowFromFake = _metricsProviderMock.GetCompanyMetrics().First();
-            var rowToPassIn = new string[]
-            {
-                rowFromFake.Name, rowFromFake.IsDefault.ToString(), rowFromFake.Weight.ToString(),
-                rowFromFake.AllowedAge.ToString(), rowFromFake.RequiresAlert.ToString()
-            };
-            _metricsProviderMock.CreateDefaultCompanyMetric(rowToPassIn);
+            _metricsProviderMock.GetCompanyMetrics();
         }
     }
 }

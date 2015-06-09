@@ -25,7 +25,7 @@ namespace IntegrationTests.Services.MetricsProviderMockTests
 
         private void MethodThatShouldThrow()
         {
-            _metricsProviderMock.GetCompanyMetrics().First();
+            _metricsProviderMock.GetCompanyMetrics();
         }
     }
 }
