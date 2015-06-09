@@ -37,12 +37,13 @@ namespace Projects.Services
                 var line = reader.ReadLine();
                 if (line != null)
                 {
-                    companyMetrics.Add(CreateDefaultCompanyMetric(line.Split(',')));
+                    var valuesInRow = line.Split(',');
+                    var createdMetric = CreateDefaultCompanyMetric(valuesInRow);
+                    companyMetrics.Add(createdMetric);
                 }
             }
         }
 
-        //This could be pulled out into a static mapper.
         public Metric CreateDefaultCompanyMetric(string[] metricRow)
         {
             var metricToReturn = new Metric();
@@ -54,6 +55,7 @@ namespace Projects.Services
             return metricToReturn;
         }
 
+        //This could be pulled out into a static mapper.
         private Metric TryCreateDefaultCompanyMetric(Metric metricToReturn, string[] metricRow)
         {
             try
