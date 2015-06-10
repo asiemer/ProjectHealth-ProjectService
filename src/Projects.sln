@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5717481F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModelTool", "ReadModelTool\ReadModelTool.csproj", "{677F585F-7048-4848-A4A7-2C4D67AFB914}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.Client", "Project.Client\Project.Client.csproj", "{94FC64CA-17CE-482C-AA57-A16332F0A46A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{677F585F-7048-4848-A4A7-2C4D67AFB914}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{677F585F-7048-4848-A4A7-2C4D67AFB914}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{677F585F-7048-4848-A4A7-2C4D67AFB914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94FC64CA-17CE-482C-AA57-A16332F0A46A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94FC64CA-17CE-482C-AA57-A16332F0A46A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94FC64CA-17CE-482C-AA57-A16332F0A46A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94FC64CA-17CE-482C-AA57-A16332F0A46A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
