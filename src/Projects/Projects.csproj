@@ -94,9 +94,6 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.XML" />
-    <Reference Include="WebApiContrib.IoC.StructureMap">
-      <HintPath>..\packages\WebApiContrib.IoC.StructureMap.0.9.5.0\lib\net40\WebApiContrib.IoC.StructureMap.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -118,6 +115,8 @@
     </Compile>
     <Compile Include="App_Start\ApplicationSettings.cs" />
     <Compile Include="App_Start\Bootstrap.cs" />
+    <Compile Include="App_Start\StructureMapDependencyScope.cs" />
+    <Compile Include="App_Start\StructureMapResolver.cs" />
     <Compile Include="Aspects\StatsdMetricsAttribute.cs" />
     <Compile Include="Contracts\Commands\ProjectCommands.cs" />
     <Compile Include="Contracts\Enums\ProjectStatus.cs" />

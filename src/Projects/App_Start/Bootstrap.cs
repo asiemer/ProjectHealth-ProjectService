@@ -12,7 +12,6 @@ using StatsdClient;
 using Projects.ReadModel.Observers;
 using Projects.ReadModel.Providers;
 using StructureMap;
-using WebApiContrib.IoC.StructureMap;
 
 namespace Projects
 {
