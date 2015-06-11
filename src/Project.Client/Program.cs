@@ -1,40 +1,38 @@
 ﻿using System;
 using NServiceBus;
 
-namespace Project.Client
+class Program
 {
-    public class Program
+    private static void Main()
     {
-        static void Main()
-        {
-            var busConfiguration = new BusConfiguration();
-            busConfiguration.EndpointName("Projects.Project.Client");
-            busConfiguration.UseSerialization<JsonSerializer>();
-            busConfiguration.EnableInstallers();
-            busConfiguration.UsePersistence<InMemoryPersistence>();
+        var busConfiguration = new BusConfiguration();
+        busConfiguration.EndpointName("Projects.Project.Client");
+        busConfiguration.UseSerialization<XmlSerializer>();
+        busConfiguration.EnableInstallers();
+        busConfiguration.UsePersistence<InMemoryPersistence>();
 
-            using (IBus bus = Bus.Create(busConfiguration).Start())
-            {
-                SendOrder(bus);
-            }
+        using (var bus = Bus.Create(busConfiguration).Start())
+        {
+            SendOrder(bus);
         }
-        static void SendOrder(IBus bus)
+    }
+
+    private static void SendOrder(IBus bus)
+    {
+        Console.WriteLine("Press 'Enter' to send a message. To exit press 'Ctrl + C'");
+
+        while (Console.ReadLine() != null)
         {
-            Console.WriteLine("Press 'Enter' to send a message. To exit press 'Ctrl + C'");
+            Guid id = Guid.NewGuid();
 
-            while (Console.ReadLine() != null)
+            var placeOrder = new PlaceOrder
             {
-                Guid id = Guid.NewGuid();
+                Product = "New shoes",
+                Id = id
+            };
+            bus.Send("Dashboard.Dashboard.Handler", placeOrder);
 
-                var placeOrder = new PlaceOrder
-                {
-                    Product = "New shoes",
-                    Id = id
-                };
-                bus.Send("Dashboard.Dashboard.Handler", placeOrder);
-
-                Console.WriteLine("Sent a new PlaceOrder message with id: {0}", id.ToString("N"));
-            }
+            Console.WriteLine("Sent a new PlaceOrder message with id: {0}", id.ToString("N"));
         }
     }
 }

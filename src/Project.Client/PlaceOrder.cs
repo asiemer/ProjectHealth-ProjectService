@@ -1,12 +1,10 @@
 ﻿using System;
 using NServiceBus;
 
-namespace Project.Client
+public class PlaceOrder : ICommand
 {
-    public class PlaceOrder : ICommand
-    {
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        public string Product { get; set; }
-    }
+    public string Product { get; set; }
 }
+
