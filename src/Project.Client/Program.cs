@@ -31,7 +31,7 @@ namespace Project.Client
                     Product = "New shoes",
                     Id = id
                 };
-                bus.Send("StepByStep.Ordering.Server", placeOrder);
+                bus.Send("Dashboard.Dashboard.Handler", placeOrder);
 
                 Console.WriteLine("Sent a new PlaceOrder message with id: {0}", id.ToString("N"));
             }
