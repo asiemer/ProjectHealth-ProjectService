@@ -30,7 +30,7 @@ class Program
                 Product = "New shoes",
                 Id = id
             };
-            bus.Send("Dashboard.Dashboard.Handler", placeOrder);
+            bus.Publish(placeOrder);
 
             Console.WriteLine("Sent a new PlaceOrder message with id: {0}", id.ToString("N"));
         }
