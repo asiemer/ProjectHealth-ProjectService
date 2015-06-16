@@ -1,63 +1,64 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
 using log4net;
-using Projects.Infrastructure;
-using Projects.ReadModel.Observers;
 using ProjectsHandler;
 
-namespace ReadModelTool
+namespace Projects.Infrastructure
 {
-    public class Replayer
+    public class EventsDispatcher
     {
-        private Dictionary<Type, Info[]> _dictionary = new Dictionary<Type, Info[]>();
-        private readonly IApplicationSettings _applicationSettings;
         private readonly ILog _log;
+        private readonly IApplicationSettings _applicationSettings;
+        private Dictionary<Type, Info[]> _dictionary = new Dictionary<Type, Info[]>();
+        private EventStoreAllCatchUpSubscription _subscription;
+        private ILastProcessedEventRepository _lastProcessedEventRepository;
 
-        public Replayer(IApplicationSettings applicationSettings, ILog log)
+        public EventsDispatcher(ILog log, IApplicationSettings applicationSettings)
         {
-            _applicationSettings = applicationSettings;
             _log = log;
+            _applicationSettings = applicationSettings;
         }
 
-        public async Task ProcessEvents()
+        public async Task Start(IEventStoreConnection connection, IEnumerable<object> observers, ILastProcessedEventRepository lastProcessedEventRepository)
         {
-            var factory = new MongoDbAtomicWriterFactory(_applicationSettings.MongoDbConnectionString, _applicationSettings.MongoDbName);
-            var observers = new ObserverRegistry().GetObservers(factory);
+            _lastProcessedEventRepository = lastProcessedEventRepository;
             WireUpObservers(observers);
-
-            var endpoint = GetEventStoreEndpoint();
-            var connection = EventStoreConnection.Create(endpoint);
-            await connection.ConnectAsync();
-            const int maxCount = 500;
             var credentials = new UserCredentials(_applicationSettings.GesUserName, _applicationSettings.GesPassword);
+            var lastCheckpoint = await lastProcessedEventRepository.Get();
 
-            var position = Position.Start;
-            do
-            {
-                var slice = await connection.ReadAllEventsForwardAsync(position, maxCount, false, credentials);
-                foreach (var resolvedEvent in slice.Events)
-                    await HandleEvent(resolvedEvent);
-                position = slice.NextPosition;
-                if(slice.IsEndOfStream) break;
-            } while(true);
-            var repo = new MongoDbLastProcessedEventRepository(_applicationSettings.MongoDbConnectionString, _applicationSettings.MongoDbName);
-            await repo.Save(position);
+            _subscription = connection.SubscribeToAllFrom(lastCheckpoint, false,
+                EventAppeared,
+                OnLiveProcessingStarted,
+                OnSubscriptionDropped,
+                credentials
+                );
         }
 
-        private async Task HandleEvent(ResolvedEvent re)
+        private void OnLiveProcessingStarted(EventStoreCatchUpSubscription subscription)
+        {
+            _log.Debug("Live processing of events started");
+        }
+
+        private void OnSubscriptionDropped(EventStoreCatchUpSubscription subscription, SubscriptionDropReason reason, Exception exception)
+        {
+            _log.Error(string.Format("Event subscription stopped. Reason: {0}", reason), exception);
+        }
+
+        private void EventAppeared(EventStoreCatchUpSubscription subscription, ResolvedEvent re)
         {
             if (re.OriginalEvent.EventType.StartsWith("$")) return; //skip internal events
             if (re.OriginalEvent.Metadata == null || re.OriginalEvent.Metadata.Any() == false) return;
             try
             {
                 var e = re.DeserializeEvent();
-                await Dispatch(e);
+                Dispatch(e).Wait();
+                if (re.OriginalPosition.HasValue)
+                    _lastProcessedEventRepository.Save(re.OriginalPosition.Value).Wait();
             }
             catch (Exception exception)
             {
@@ -79,7 +80,7 @@ namespace ReadModelTool
                 }
                 catch (Exception ex)
                 {
-                    _log.Error(string.Format("Could not dispatch event {0} to projection {1}",
+                    _log.Error(string.Format("Could not dispatch event {0} to projection {1}", 
                         eventType.Name, item.Observer.GetType().Name), ex);
                 }
             }
@@ -100,13 +101,6 @@ namespace ReadModelTool
                 .GroupBy(x => x.ParameterType)
                 .ToDictionary(g => g.Key,
                     g => g.Select(y => new Info { Observer = y.Projection, MethodInfo = y.MethodInfo }).ToArray());
-        }
-
-        private IPEndPoint GetEventStoreEndpoint()
-        {
-            var ipAddress = IPAddress.Parse(_applicationSettings.GesIpAddress);
-            var endpoint = new IPEndPoint(ipAddress, _applicationSettings.GesTcpIpPort);
-            return endpoint;
         }
 
         public class Info

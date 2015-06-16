@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0ACFA9B2-6141-4826-90A2-F229ED0EC0C4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ProjectsHandler</RootNamespace>
+    <AssemblyName>ProjectsHandler</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EventStore.ClientAPI">
+      <HintPath>..\packages\EventStore.Client.3.0.2\lib\net40\EventStore.ClientAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\MongoDB.Bson.2.0.0\lib\net45\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\packages\MongoDB.Driver.2.0.0\lib\net45\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.0.0\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core">
+      <HintPath>..\packages\NServiceBus.5.2.2\lib\net45\NServiceBus.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Host">
+      <HintPath>..\packages\NServiceBus.Host.6.0.0\lib\net45\NServiceBus.Host.exe</HintPath>
+    </Reference>
+    <Reference Include="StructureMap">
+      <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationSettings.cs" />
+    <Compile Include="Bootstrap.cs" />
+    <Compile Include="Infrastructure\EventsDispatcher.cs" />
+    <Compile Include="Infrastructure\GesRepository.cs" />
+    <Compile Include="Infrastructure\ILastProcessedEventRepository.cs" />
+    <Compile Include="Infrastructure\IProjectionWriter.cs" />
+    <Compile Include="Infrastructure\IProjectionWriterFactory.cs" />
+    <Compile Include="Infrastructure\IProvider.cs" />
+    <Compile Include="Infrastructure\MessageExtensions.cs" />
+    <Compile Include="Infrastructure\MongoDbAtomicWriterFactory.cs" />
+    <Compile Include="Infrastructure\MongoDbLastProcessedEventRepository.cs" />
+    <Compile Include="Infrastructure\MongoDbProjectionWriter.cs" />
+    <Compile Include="Infrastructure\MongoDbProvider.cs" />
+    <Compile Include="Infrastructure\UniqueKeyGenerator.cs" />
+    <Compile Include="ProjectsHandler.cs" />
+    <Compile Include="Domain\AggregateFactory.cs" />
+    <Compile Include="Domain\Base\AggregateBase.cs" />
+    <Compile Include="Domain\Base\IAggregate.cs" />
+    <Compile Include="Domain\Base\IAggregateFactory.cs" />
+    <Compile Include="Domain\Base\IRepository.cs" />
+    <Compile Include="Domain\Base\IState.cs" />
+    <Compile Include="Domain\Base\IUniqueKeyGenerator.cs" />
+    <Compile Include="Domain\Base\RedirectToWhen.cs" />
+    <Compile Include="Domain\Projects\ProjectAggregate.cs" />
+    <Compile Include="Domain\Projects\ProjectApplicationService.cs" />
+    <Compile Include="Domain\Projects\ProjectState.cs" />
+    <Compile Include="EndpointConfig.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadModel\Observers\ObserverRegistry.cs" />
+    <Compile Include="ReadModel\Observers\ProjectsObserver.cs" />
+    <Compile Include="ReadModel\Providers\SamplesProvider.cs" />
+    <Compile Include="ReadModel\Views\ProjectView.cs" />
+    <Compile Include="Services\IMetricsFileGetter.cs" />
+    <Compile Include="Services\IMetricsProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Projects.Contracts\Projects.Contracts.csproj">
+      <Project>{3fedf417-1ca6-4c0d-8341-460a512a9cb4}</Project>
+      <Name>Projects.Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(ProjectDir)$(OutputPath)NServiceBus.Host.exe</StartProgram>
+  </PropertyGroup>
+</Project>

@@ -50,17 +50,17 @@
     <Compile Include="SpecificationBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <EmbeddedResource Include="TestFiles\BlankValue.csv" />
     <EmbeddedResource Include="TestFiles\InvalidMetrics.csv" />
     <EmbeddedResource Include="TestFiles\InvalidWeight.csv" />
     <EmbeddedResource Include="TestFiles\Metrics.csv" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Projects\Projects.csproj">
-      <Project>{A54676F3-E452-4D76-96A3-F0265CE48ADF}</Project>
-      <Name>Projects</Name>
+    <ProjectReference Include="..\ProjectsHandler\Projects.Handler.csproj">
+      <Project>{0acfa9b2-6141-4826-90a2-f229ed0ec0c4}</Project>
+      <Name>Projects.Handler</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

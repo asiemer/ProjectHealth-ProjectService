@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{864158C4-F062-46E4-AA0F-A35ADE3B963E}</ProjectGuid>
+    <ProjectGuid>{3FEDF417-1CA6-4C0D-8341-460A512A9CB4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTests</RootNamespace>
-    <AssemblyName>UnitTests</AssemblyName>
+    <RootNamespace>Projects.Contracts</RootNamespace>
+    <AssemblyName>Projects.Contracts</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,41 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\project_aggregate_specs.cs" />
-    <Compile Include="Domain\when_adding_metrics.cs" />
-    <Compile Include="Domain\when_adding_team_members.cs" />
-    <Compile Include="Domain\when_creating_a_new_project.cs" />
-    <Compile Include="Domain\when_removing_metrics.cs" />
-    <Compile Include="Domain\when_removing_team_members.cs" />
-    <Compile Include="Domain\when_suspending_a_project.cs" />
-    <Compile Include="ReadModel\SamplesObserverSpecs.cs" />
-    <Compile Include="SpecificationBase.cs" />
+    <Compile Include="Commands\ProjectCommands.cs" />
+    <Compile Include="Enums\ProjectStatus.cs" />
+    <Compile Include="Events\ProjectEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Projects.Contracts\Projects.Contracts.csproj">
-      <Project>{3fedf417-1ca6-4c0d-8341-460a512a9cb4}</Project>
-      <Name>Projects.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ProjectsHandler\Projects.Handler.csproj">
-      <Project>{0acfa9b2-6141-4826-90a2-f229ed0ec0c4}</Project>
-      <Name>Projects.Handler</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

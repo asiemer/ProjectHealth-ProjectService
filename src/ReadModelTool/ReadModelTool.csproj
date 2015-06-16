@@ -73,9 +73,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Projects\Projects.csproj">
-      <Project>{a54676f3-e452-4d76-96a3-f0265ce48adf}</Project>
-      <Name>Projects</Name>
+    <ProjectReference Include="..\ProjectsHandler\Projects.Handler.csproj">
+      <Project>{0acfa9b2-6141-4826-90a2-f229ed0ec0c4}</Project>
+      <Name>Projects.Handler</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

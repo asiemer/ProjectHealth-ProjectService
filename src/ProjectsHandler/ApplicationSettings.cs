@@ -1,9 +1,19 @@
 using System;
 using System.Configuration;
-using ProjectsHandler;
 
-namespace ReadModelTool
+namespace ProjectsHandler
 {
+    public interface IApplicationSettings
+    {
+        string GesIpAddress { get; }
+        int GesHttpPort { get; }
+        int GesTcpIpPort { get; }
+        string GesUserName { get; }
+        string GesPassword { get; }
+        string MongoDbConnectionString { get; }
+        string MongoDbName { get; }
+    }
+
     public class ApplicationSettings : IApplicationSettings
     {
         public ApplicationSettings()
