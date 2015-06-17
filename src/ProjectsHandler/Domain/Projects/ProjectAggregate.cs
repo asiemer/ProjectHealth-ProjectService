@@ -24,6 +24,25 @@ namespace Projects.Domain
                 Name = name,
                 DefaultMetrics = defaultMetrics
             });
+            UpdateScore();
+        }
+
+        private void UpdateScore()
+        {
+            var score = new ProjectScore
+            {
+                Red = State.Metrics.Where(x => x.Value == -1).Sum(m => m.Weight),
+                Yellow = State.Metrics.Where(x => x.Value == 0).Sum(m => m.Weight),
+                Green = State.Metrics.Where(x => x.Value == 1).Sum(m => m.Weight)
+            };
+            State.Score = score;
+            PublishPublicEvent(new ProjectScoreChanged
+            {
+                Id = State.Id,
+                Red = State.Score.Red,
+                Yellow = State.Score.Yellow,
+                Green = State.Score.Green
+            });
         }
 
         public void SetCem(Guid staffId)
@@ -76,8 +95,9 @@ namespace Projects.Domain
             Apply(new MetricsAdded
             {
                 Id = State.Id,
-                Metrics = trulyNewMetricIds.Select(x => new MetricInfo{MetricId = x, IsDefault = true}).ToArray()
+                Metrics = trulyNewMetricIds.Select(x => new MetricInfo{MetricId = x, IsDefault = false}).ToArray()
             });
+            UpdateScore();
         }
 
         public void RemoveMetrics(Guid[] metricIds)

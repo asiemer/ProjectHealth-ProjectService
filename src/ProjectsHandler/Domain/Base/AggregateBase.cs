@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace Projects.Domain
 {
-    public abstract class AggregateBase<TState> : IAggregate
+    public abstract class AggregateBase<TState> : IAggregate, IPublisher
         where TState : IState
     {
         private readonly IList<object> _uncommitedEvents = new List<object>();
+        private readonly IList<object> _publicEvents = new List<object>();
         protected TState State;
 
         protected AggregateBase(TState state)
@@ -25,6 +26,11 @@ namespace Projects.Domain
             State.Modify(e);
         }
 
+        protected void PublishPublicEvent(object e)
+        {
+            _publicEvents.Add(e);
+        }
+
         IEnumerable<object> IAggregate.GetUncommittedEvents()
         {
             return _uncommitedEvents;
@@ -33,6 +39,16 @@ namespace Projects.Domain
         void IAggregate.ClearUncommittedEvents()
         {
             _uncommitedEvents.Clear();
+        }
+
+        IEnumerable<object> IPublisher.GetPublicEvents()
+        {
+            return _publicEvents;
+        }
+
+        void IPublisher.ClearPublicEvents()
+        {
+            _publicEvents.Clear();
         }
 
         Guid IAggregate.Id { get { return State.Id; } }

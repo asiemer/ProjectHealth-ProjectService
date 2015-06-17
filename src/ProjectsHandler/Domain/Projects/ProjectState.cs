@@ -10,6 +10,15 @@ namespace Projects.Domain
     {
         public Guid Id { get; set; }
         public bool IsDefault { get; set; }
+        public int Weight { get; set; }
+        public int Value { get; set; }
+    }
+
+    public class ProjectScore
+    {
+        public int Red { get; set; }
+        public int Yellow { get; set; }
+        public int Green { get; set; }
     }
 
     public class ProjectState : IState
@@ -27,6 +36,7 @@ namespace Projects.Domain
         public ProjectStatus Status { get; set; }
         public List<Guid> TeamMembers { get; set; }
         public List<MetricState> Metrics { get; set; }
+        public ProjectScore Score { get; set; }
 
         public void Modify(object e)
         {
@@ -40,7 +50,7 @@ namespace Projects.Domain
             Id = e.Id;
             Status = ProjectStatus.Active;
             Metrics = (e.DefaultMetrics ?? new MetricInfo[0])
-                .Select(x => new MetricState {Id = x.MetricId, IsDefault = true})
+                .Select(x => new MetricState {Id = x.MetricId, IsDefault = x.IsDefault, Weight = x.Weight, Value = x.Value})
                 .ToList();
         }
 

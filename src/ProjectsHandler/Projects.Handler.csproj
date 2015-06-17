@@ -33,6 +33,9 @@
     <Reference Include="EventStore.ClientAPI">
       <HintPath>..\packages\EventStore.Client.3.0.2\lib\net40\EventStore.ClientAPI.dll</HintPath>
     </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -49,11 +52,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.4.0.1.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="NServiceBus.Core">
       <HintPath>..\packages\NServiceBus.5.2.2\lib\net45\NServiceBus.Core.dll</HintPath>
     </Reference>
     <Reference Include="NServiceBus.Host">
       <HintPath>..\packages\NServiceBus.Host.6.0.0\lib\net45\NServiceBus.Host.exe</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.NHibernate">
+      <HintPath>..\packages\NServiceBus.NHibernate.6.2.0\lib\net45\NServiceBus.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="NServiceBus.ObjectBuilder.StructureMap">
       <HintPath>..\packages\NServiceBus.StructureMap.5.0.1\lib\net45\NServiceBus.ObjectBuilder.StructureMap.dll</HintPath>
@@ -76,7 +85,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationSettings.cs" />
-    <Compile Include="Bootstrap.cs" />
+    <Compile Include="Bootstrap\Bootstrap.cs" />
+    <Compile Include="Bootstrap\SubscriptionAuthorizer.cs" />
+    <Compile Include="Domain\Base\IPublisher.cs" />
     <Compile Include="Infrastructure\EventsDispatcher.cs" />
     <Compile Include="Infrastructure\GesRepository.cs" />
     <Compile Include="Infrastructure\ILastProcessedEventRepository.cs" />
@@ -101,7 +112,7 @@
     <Compile Include="Domain\Projects\ProjectAggregate.cs" />
     <Compile Include="Domain\Projects\ProjectApplicationService.cs" />
     <Compile Include="Domain\Projects\ProjectState.cs" />
-    <Compile Include="EndpointConfig.cs" />
+    <Compile Include="Bootstrap\EndpointConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadModel\Observers\ObserverRegistry.cs" />
     <Compile Include="ReadModel\Observers\ProjectsObserver.cs" />

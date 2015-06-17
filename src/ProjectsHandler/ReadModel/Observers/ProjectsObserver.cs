@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Projects.Contracts.Enums;
 using Projects.Contracts.Events;
-using Projects.Domain;
 using Projects.Infrastructure;
 using Projects.ReadModel.Views;
 

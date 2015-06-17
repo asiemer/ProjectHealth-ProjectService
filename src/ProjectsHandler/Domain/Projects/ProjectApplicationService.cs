@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NServiceBus;
 using Projects.Contracts.Commands;
 using Projects.Contracts.Events;
 using Projects.Services;
@@ -14,11 +15,13 @@ namespace Projects.Domain
     {
         private readonly IRepository _repository;
         private readonly IMetricsProvider _metricsProvider;
+        private readonly IBus _bus;
 
-        public ProjectApplicationService(IRepository repository, IMetricsProvider metricsProvider)
+        public ProjectApplicationService(IRepository repository, IMetricsProvider metricsProvider, IBus bus)
         {
             _repository = repository;
             _metricsProvider = metricsProvider;
+            _bus = bus;
         }
 
         public void Execute(object command)
@@ -26,7 +29,8 @@ namespace Projects.Domain
             RedirectToWhen.InvokeCommand(this, command);
         }
 
-        public void When(CreateProject cmd)
+// ReSharper disable UnusedMember.Local
+        private void When(CreateProject cmd)
         {
             var metrics = _metricsProvider.GetCompanyMetrics()
                 .Select(x => new MetricInfo
@@ -40,7 +44,6 @@ namespace Projects.Domain
             InternalAct(cmd.Id, aggregate => aggregate.Create(cmd.Id, cmd.Name, metrics));
         }
 
-// ReSharper disable UnusedMember.Local
         private void When(SetCem cmd)
         {
             InternalAct(cmd.Id, aggregate => aggregate.SetCem(cmd.StaffId));
@@ -82,6 +85,13 @@ namespace Projects.Domain
             var aggregate = _repository.GetById<ProjectAggregate>(id);
             action(aggregate);
             _repository.Save(aggregate);
+            PublishPublicEvents(aggregate);
+        }
+
+        private void PublishPublicEvents(IPublisher aggregate)
+        {
+            foreach (var e in aggregate.GetPublicEvents())
+                _bus.Publish(e);
         }
     }
 }
