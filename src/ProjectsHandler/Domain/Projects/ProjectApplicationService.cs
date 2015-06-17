@@ -92,6 +92,7 @@ namespace Projects.Domain
         {
             foreach (var e in aggregate.GetPublicEvents())
                 _bus.Publish(e);
+            aggregate.ClearPublicEvents();
         }
     }
 }
