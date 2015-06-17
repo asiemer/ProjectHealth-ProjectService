@@ -18,10 +18,10 @@ namespace ProjectsHandler
         private static IRepository _repository;
         private static EventsDispatcher _dispatcher;
 
-        public static void Init()
+        public static IContainer Init()
         {
             InitLogging();
-            ObjectFactory.Initialize(init =>
+            var container = new Container(init =>
             {
                 init.For<IRepository>().Use(c => _repository);
                 init.For<IApplicationSettings>().Use<ApplicationSettings>();
@@ -36,9 +36,10 @@ namespace ProjectsHandler
                 //************************************************************
             });
 
-            var applicationSettings = ObjectFactory.GetInstance<IApplicationSettings>();
+            var applicationSettings = container.GetInstance<IApplicationSettings>();
             InitGetEventStore(applicationSettings);
-            InitEventsDispatcher(applicationSettings, ObjectFactory.GetInstance<ILog>());
+            InitEventsDispatcher(applicationSettings, container.GetInstance<ILog>());
+            return container;
         }
 
         private static void InitLogging()

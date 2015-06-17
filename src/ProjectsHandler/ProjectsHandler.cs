@@ -1,5 +1,4 @@
-﻿using System;
-using NServiceBus;
+﻿using NServiceBus;
 using Projects.Contracts.Commands;
 using Projects.Domain;
 

@@ -7,7 +7,6 @@ using Projects.Services;
 namespace Projects.Domain
 {
     public interface IProjectApplicationService {
-        Guid Create(CreateProject command);
         void Execute(object command);
     }
 
@@ -27,9 +26,8 @@ namespace Projects.Domain
             RedirectToWhen.InvokeCommand(this, command);
         }
 
-        public Guid Create(CreateProject cmd)
+        public void When(CreateProject cmd)
         {
-            var id = Guid.NewGuid();
             var metrics = _metricsProvider.GetCompanyMetrics()
                 .Select(x => new MetricInfo
                 {
@@ -39,8 +37,7 @@ namespace Projects.Domain
                     Value = x.Value
                 })
                 .ToArray();
-            InternalAct(id, aggregate => aggregate.Create(id, cmd.Name, metrics));
-            return id;
+            InternalAct(cmd.Id, aggregate => aggregate.Create(cmd.Id, cmd.Name, metrics));
         }
 
 // ReSharper disable UnusedMember.Local

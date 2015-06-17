@@ -7,10 +7,14 @@ namespace ProjectsHandler
 		This class configures this endpoint as a Server. More information about how to configure the NServiceBus host
 		can be found here: http://particular.net/articles/the-nservicebus-host
 	*/
-    public class EndpointConfig : IConfigureThisEndpoint
+    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server
     {
         public void Customize(BusConfiguration configuration)
         {
+            var container = Bootstrap.Init();
+
+            configuration.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(container));
+            configuration.EndpointName("Heartbeat.Projects.Handler");
             // NServiceBus provides the following durable storage options
             // To use RavenDB, install-package NServiceBus.RavenDB and then use configuration.UsePersistence<RavenDBPersistence>();
             // To use SQLServer, install-package NServiceBus.NHibernate and then use configuration.UsePersistence<NHibernatePersistence>();
@@ -21,6 +25,7 @@ namespace ProjectsHandler
             //Also note that you can mix and match storages to fit you specific needs. 
             //http://docs.particular.net/nservicebus/persistence-order
             configuration.UsePersistence<InMemoryPersistence>();
+            configuration.Conventions().DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Projects.Contracts.Commands"));
         }
     }
 }

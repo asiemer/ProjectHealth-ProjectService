@@ -3,6 +3,7 @@ using System.IO;
 using System.Web.Http;
 using log4net;
 using log4net.Config;
+using NServiceBus;
 using StatsdClient;
 using StructureMap;
 
@@ -13,13 +14,13 @@ namespace Projects
         public static void Init()
         {
             InitLogging();
-            ObjectFactory.Initialize(init =>
-            {
-                init.For<ILog>().Singleton().Use(c => LogManager.GetLogger("Projects"));
-            });
-            GlobalConfiguration.Configuration.DependencyResolver =
-                new StructureMapResolver(ObjectFactory.Container);
+            InitMetrics();
+            var bus = InitBus();
+            InitContainer(bus);
+        }
 
+        private static void InitMetrics()
+        {
             var metricsConfig = new MetricsConfig
             {
                 StatsdServerName = "statsd.hostedgraphite.com",
@@ -27,6 +28,28 @@ namespace Projects
             };
 
             StatsdClient.Metrics.Configure(metricsConfig);
+        }
+
+        static void InitContainer(IBus bus)
+        {
+            var container = new Container(init =>
+            {
+                init.For<IBus>().Singleton().Use(c => bus);
+                init.For<ILog>().Singleton().Use(c => LogManager.GetLogger("Projects"));
+            });
+            GlobalConfiguration.Configuration.DependencyResolver = new StructureMapResolver(container);
+        }
+
+        static IBus InitBus()
+        {
+            var config = new BusConfiguration();
+            config.EndpointName("Heartbeat.Projects.API");
+            config.EnableInstallers();
+            config.UsePersistence<InMemoryPersistence>();
+            config.Conventions().DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Projects.Contracts.Commands"));
+            IBus bus = Bus.Create(config).Start();
+            //SetLoggingLibrary.Log4Net(() => XmlConfigurator.ConfigureAndWatch(new FileInfo("log4net.config")));
+            return bus;
         }
 
         private static void InitLogging()
