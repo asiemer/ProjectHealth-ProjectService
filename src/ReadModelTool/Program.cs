@@ -3,7 +3,7 @@ using System.IO;
 using log4net;
 using log4net.Config;
 using MongoDB.Driver;
-using Projects;
+using ProjectsHandler;
 
 namespace ReadModelTool
 {
