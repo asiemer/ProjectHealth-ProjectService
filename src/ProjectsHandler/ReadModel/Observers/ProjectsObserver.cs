@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Projects.Contracts.Enums;
@@ -58,6 +59,11 @@ namespace Projects.ReadModel.Observers
         {
             await _writer.Update(e.Id, v => v.Metrics.AddRange(e.Metrics.ToMetricViews()));
         }
+        public async Task When(MetricUpdated e)
+        {
+            Action<ProjectView> updateValue = (x => x.Metrics.Find(y => y.MetricId == e.Metric.MetricId).Value = e.Metric.Value);
+            await _writer.Update(e.Id, updateValue);
+        }
 
         public async Task When(MetricsRemoved e)
         {
@@ -78,6 +84,10 @@ namespace Projects.ReadModel.Observers
         public static IEnumerable<MetricView> ToMetricViews(this IEnumerable<MetricInfo> list)
         {
             return list.Select(x => new MetricView { MetricId = x.MetricId, IsDefault = x.IsDefault, Weight = x.Weight, Value = x.Value});
+        }
+        public static MetricView ToMetricView(this MetricInfo metric)
+        {
+            return new MetricView { MetricId = metric.MetricId, IsDefault = metric.IsDefault, Weight = metric.Weight, Value = metric.Value};
         }
     }
 }

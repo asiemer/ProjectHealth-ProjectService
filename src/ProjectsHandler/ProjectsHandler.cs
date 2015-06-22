@@ -12,7 +12,8 @@ namespace ProjectsHandler
         IHandleMessages<RemoveTeamMembers>,
         IHandleMessages<AddMetrics>,
         IHandleMessages<RemoveMetrics>,
-        IHandleMessages<SuspendProject>
+        IHandleMessages<SuspendProject>,
+        IHandleMessages<UpdateMetric>
     {
         private readonly IProjectApplicationService _projectApplicationService;
 
@@ -57,6 +58,11 @@ namespace ProjectsHandler
         }
 
         public void Handle(SuspendProject message)
+        {
+            _projectApplicationService.Execute(message);
+        }
+
+        public void Handle(UpdateMetric message)
         {
             _projectApplicationService.Execute(message);
         }

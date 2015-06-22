@@ -69,11 +69,24 @@ namespace Projects.Controllers
         }
 
         [HttpPost]
+        [Route("{projectId}/metrics/update/{metricId}/value")]
+        public void UpdateMetrics(Guid projectId, Guid metricId, [FromBody]UpdateMetricsRequest req)
+        {
+             _bus.Send(new UpdateMetric { Id = projectId, MetricId = metricId, Value = req.Value });
+        }
+
+        [HttpPost]
         [Route("{projectId}/suspend")]
         public void Suspend(Guid projectId)
         {
             _bus.Send(new SuspendProject { Id = projectId });
         }
+    }
+
+    public class UpdateMetricsRequest
+    {
+        public Guid MetricId { get; set; }
+        public int Value { get; set; }
     }
 
     public class RemoveMetricsRequest

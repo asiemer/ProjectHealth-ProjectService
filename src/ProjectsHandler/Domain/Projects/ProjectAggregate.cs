@@ -114,6 +114,21 @@ namespace Projects.Domain
             });
         }
 
+        public void UpdateMetrics(Guid metricId, int value)
+        {
+            ThrowIfNotExists("remove metrics from");
+
+            if (metricId == null || metricId == Guid.Empty)
+                throw new InvalidOperationException("Cannot update null or empty metric");
+
+            Apply(new MetricUpdated
+            {
+                Id = State.Id,
+                Metric = new MetricInfo { MetricId = metricId, IsDefault = false, Value = value }
+            });
+            UpdateScore();
+        }
+
         public void Suspend()
         {
             ThrowIfNotExists("suspend");

@@ -53,6 +53,12 @@ namespace Projects.Contracts.Events
         public MetricInfo[] Metrics { get; set; }
     }
 
+    public class MetricUpdated
+    {
+        public Guid Id { get; set; }
+        public MetricInfo Metric { get; set; }
+    }
+
     public class ProjectSuspended
     {
         public Guid Id { get; set; }

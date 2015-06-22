@@ -74,6 +74,11 @@ namespace Projects.Domain
             InternalAct(cmd.Id, aggregate => aggregate.RemoveTeamMembers(cmd.MetricIds));
         }
 
+        private void When(UpdateMetric cmd)
+        {
+            InternalAct(cmd.Id, aggregate => aggregate.UpdateMetrics(cmd.MetricId, cmd.Value));
+        }
+
         private void When(SuspendProject cmd)
         {
             InternalAct(cmd.Id, aggregate => aggregate.Suspend());
