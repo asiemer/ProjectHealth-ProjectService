@@ -69,7 +69,7 @@ namespace Projects.Services
             }
             catch (FormatException e)
             {
-                throw new Exception("One of the columns has values entered in the incorrect format.");
+                throw new Exception("One of the columns has values entered in the incorrect format.", e);
             }
             return metricToReturn;
         }

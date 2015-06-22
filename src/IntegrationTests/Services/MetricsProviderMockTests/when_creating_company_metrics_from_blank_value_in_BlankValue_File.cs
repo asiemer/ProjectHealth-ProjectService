@@ -1,13 +1,12 @@
-using System.Linq;
 using NUnit.Framework;
 using Projects.Services;
 
+// ReSharper disable InconsistentNaming
 namespace IntegrationTests.Services.MetricsProviderMockTests
 {
     public class when_creating_company_metrics_from_blank_value_in_BlankValue_File
     {
         private MetricsProviderMock _metricsProviderMock;
-        private Metric[] _metrics;
 
         [SetUp]
         protected void When()

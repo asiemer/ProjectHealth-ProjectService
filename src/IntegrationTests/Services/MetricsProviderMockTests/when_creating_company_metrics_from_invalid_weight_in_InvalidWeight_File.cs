@@ -1,12 +1,12 @@
 using NUnit.Framework;
 using Projects.Services;
 
+// ReSharper disable InconsistentNaming
 namespace IntegrationTests.Services.MetricsProviderMockTests
 {
     public class when_creating_company_metrics_from_invalid_weight_in_InvalidWeight_File
     {
         private MetricsProviderMock _metricsProviderMock;
-        private Metric[] _metrics;
 
         [SetUp]
         protected void When()
