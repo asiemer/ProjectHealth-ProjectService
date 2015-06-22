@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
 using log4net;
-using Projects;
 using Projects.Infrastructure;
 using Projects.ReadModel.Observers;
+using ProjectsHandler;
 
 namespace ReadModelTool
 {

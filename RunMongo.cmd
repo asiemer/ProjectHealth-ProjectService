@@ -1,0 +1,1 @@
+.\MongoDb\mongod.exe --config .\MongoDb\mongod.cfg
