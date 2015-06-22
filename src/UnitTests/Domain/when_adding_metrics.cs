@@ -134,4 +134,34 @@ namespace UnitTests.Domain
             Assert.Throws<InvalidOperationException>(() => sut.AddMetrics(null));
         }
     }
+
+    public class when_trying_to_update_metric_value : project_aggregate_specs
+    {
+        protected override IEnumerable<object> GetEvents()
+        {
+            return new[]
+            {
+                new ProjectCreated {Id = projectId, Name = projectName, DefaultMetrics = defaultMetrics}
+            };
+        }
+
+        protected override void When()
+        {
+            sut.UpdateMetrics(defaultMetrics[0].MetricId, 1);
+        }
+
+        [Then]
+        public void it_should_trigger_updated_metric_event()
+        {
+            Assert.That(GetUncommittedEvents().Count(), Is.EqualTo(1));
+            Assert.That(GetUncommittedEvents().First(), Is.TypeOf<MetricUpdated>());
+        }
+
+        [Then]
+        public void it_should_set_the_value_of_metric_to_one()
+        {
+            var e = (MetricUpdated)GetUncommittedEvents().First();
+            Assert.That(e.Metric.Value, Is.EqualTo(1));
+        }
+    }
 }
