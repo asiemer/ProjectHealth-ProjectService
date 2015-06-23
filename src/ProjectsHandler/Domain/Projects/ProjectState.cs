@@ -69,6 +69,11 @@ namespace Projects.Domain
         {
             Metrics.AddRange(e.Metrics.Select(x => new MetricState{Id = x.MetricId, IsDefault = x.IsDefault}));
         }
+        
+        private void When(MetricUpdated e)
+        {
+            Metrics.Find(y => y.Id == e.Metric.MetricId).Value = e.Metric.Value;
+        }
 
         private void When(MetricsRemoved e)
         {

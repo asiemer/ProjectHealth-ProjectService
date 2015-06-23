@@ -44,6 +44,13 @@ namespace Projects.Contracts.Commands
         public Guid[] MetricIds { get; set; }
     }
 
+    public class UpdateMetric
+    {
+        public Guid Id { get; set; }
+        public Guid MetricId { get; set; }
+        public int Value { get; set; }
+    }
+
     public class SuspendProject
     {
         public Guid Id { get; set; }
