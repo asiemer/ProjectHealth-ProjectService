@@ -56,7 +56,8 @@ namespace Projects.Contracts.Events
     public class MetricUpdated
     {
         public Guid Id { get; set; }
-        public MetricInfo Metric { get; set; }
+        public Guid MetricId { get; set; }
+        public int Value { get; set; }
     }
 
     public class ProjectSuspended

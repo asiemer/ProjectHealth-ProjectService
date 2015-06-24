@@ -72,7 +72,7 @@ namespace Projects.Domain
         
         private void When(MetricUpdated e)
         {
-            Metrics.Find(y => y.Id == e.Metric.MetricId).Value = e.Metric.Value;
+            Metrics.Find(y => y.Id == e.MetricId).Value = e.Value;
         }
 
         private void When(MetricsRemoved e)

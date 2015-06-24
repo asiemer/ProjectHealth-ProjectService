@@ -124,7 +124,8 @@ namespace Projects.Domain
             Apply(new MetricUpdated
             {
                 Id = State.Id,
-                Metric = new MetricInfo { MetricId = metricId, IsDefault = false, Value = value }
+                MetricId = metricId,
+                Value = value
             });
             UpdateScore();
         }

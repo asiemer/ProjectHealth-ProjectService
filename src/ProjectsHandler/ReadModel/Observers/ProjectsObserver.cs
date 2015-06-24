@@ -61,7 +61,7 @@ namespace Projects.ReadModel.Observers
         }
         public async Task When(MetricUpdated e)
         {
-            Action<ProjectView> updateValue = (x => x.Metrics.Find(y => y.MetricId == e.Metric.MetricId).Value = e.Metric.Value);
+            Action<ProjectView> updateValue = (x => x.Metrics.Find(y => y.MetricId == e.MetricId).Value = e.Value);
             await _writer.Update(e.Id, updateValue);
         }
 

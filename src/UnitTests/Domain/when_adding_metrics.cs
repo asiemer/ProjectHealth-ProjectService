@@ -161,7 +161,7 @@ namespace UnitTests.Domain
         public void it_should_set_the_value_of_metric_to_one()
         {
             var e = (MetricUpdated)GetUncommittedEvents().First();
-            Assert.That(e.Metric.Value, Is.EqualTo(1));
+            Assert.That(e.Value, Is.EqualTo(1));
         }
     }
 }

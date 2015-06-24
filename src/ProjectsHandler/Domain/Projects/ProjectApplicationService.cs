@@ -71,7 +71,7 @@ namespace Projects.Domain
 
         private void When(RemoveMetrics cmd)
         {
-            InternalAct(cmd.Id, aggregate => aggregate.RemoveTeamMembers(cmd.MetricIds));
+            InternalAct(cmd.Id, aggregate => aggregate.RemoveMetrics(cmd.MetricIds));
         }
 
         private void When(UpdateMetric cmd)
