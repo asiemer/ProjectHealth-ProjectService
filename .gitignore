@@ -6,3 +6,5 @@ bin
 *.suo
 *.user
 *.DotSettings
+src/Projects/App_Data/*.txt
+MongoDb/mongod.cfg
