@@ -17,15 +17,17 @@ You need to have the following installed on your system
 
 - Visual Studio 2013 Professional or higher
 - [PostSharp](https://visualstudiogallery.msdn.microsoft.com/a058d5d3-e654-43f8-a308-c3bdfdd0be4a)
+- MS SQL Express 2012 (instance name in app.config is SQLEXPRESS2012
+- The solution folder on a path with no spaces
 
 #Instructions
 
-- Clone the Git repository to your local drive ([https://github.com/asiemer/ProjectHeartbeat-IterationZero](https://github.com/asiemer/ProjectHeartbeat-IterationZero))
+- Clone the Git repository to your local drive ([https://github.com/asiemer/ProjectHeartbeat-IterationZero](https://github.com/asiemer/ProjectHeartbeat-ProjectsService))
 - Execute the batch file `ClickToBuild.cmd` located in the folder containing the cloned repository to build and test the solution. 
 - Alternatively open a PowerShell command prompt and navigate to the folder containing the cloned repository. Build the solution by invoking the following command `.\psake\psake.ps1 .\default.ps1 Test`
-
+- Create a database called `nservicebus` in SQL Server Express
 - Create a sub-folder `data\mongodb` and a sub-folder `logs\mongodb` in the solution folder 
-- Run MongoDB as a Windows service by using this command
+- Run MongoDB as a Windows service by using this PS script from the root of the solution:
 
 ```
 
@@ -40,7 +42,7 @@ You need to have the following installed on your system
 
 ```
 
-- Execute the batch file `RunGetEventStore.cmd` in the root folder of the repository to run GetEventStore. This will start GES with the data directory `..\Data\EventStore\Projects` listening at the default tcp-ip port 1113 and http port 2113. The default username is equal to `admin` and the default password is `changeit`.
+- Execute the batch file `RunGES.cmd` in the root folder of the repository to run GetEventStore. This will start GES with the data directory `..\Data\EventStore\Projects` listening at the default tcp-ip port 1113 and http port 2113. The default username is equal to `admin` and the default password is `changeit`.
 
 #Admin GES
 Open a browser and navigate to `localhost:2113/web/index.html`. Enter the credentials when asked (`admin`/`changeit`). Navigate to the `Stream Browser` tab. You should see a list of streams. Click on the one whose events you want to see, e.g. `ProjectAggregate-<ID>` where `<ID>` is a Guid representing the ID of the aggregate instance. The list of events in the stream will be displayed starting with the most recent event.
