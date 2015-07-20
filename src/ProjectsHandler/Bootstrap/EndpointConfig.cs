@@ -15,6 +15,8 @@ namespace ProjectsHandler.Bootstrap
             configuration.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(container));
             configuration.EndpointName("Heartbeat.Projects.Handler");
             configuration.UsePersistence<NHibernatePersistence>();
+            configuration.UseTransport<SqlServerTransport>();
+            configuration.EnableInstallers();
             configuration.Conventions().DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Projects.Contracts.Commands"));
             configuration.Conventions().DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Projects.Contracts.Events"));
         }

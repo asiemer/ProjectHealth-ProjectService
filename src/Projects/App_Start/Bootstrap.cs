@@ -44,8 +44,9 @@ namespace Projects
         {
             var config = new BusConfiguration();
             config.EndpointName("Heartbeat.Projects.API");
-            config.EnableInstallers();
             config.UsePersistence<InMemoryPersistence>();
+            config.UseTransport<SqlServerTransport>();
+            config.EnableInstallers();
             config.Conventions().DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Projects.Contracts.Commands"));
             IBus bus = Bus.Create(config).Start();
             //SetLoggingLibrary.Log4Net(() => XmlConfigurator.ConfigureAndWatch(new FileInfo("log4net.config")));
